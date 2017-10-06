@@ -9,6 +9,7 @@
 *.dll
 *.so
 *.dylib
+examples
 
 # Output of delve test debugger
 debug

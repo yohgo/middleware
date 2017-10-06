@@ -17,7 +17,7 @@ func (m *Middleware) JWTAuthenticate(w http.ResponseWriter, r *http.Request) boo
 	// Attempt to get token string from the Authorization header
 	token := strings.TrimPrefix(r.Header.Get("Authorization"), "Bearer ")
 
-	//Attempt to parse the token
+	// Attempt to parse the token
 	parsedToken, err := jwt.Parse(token, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, fmt.Errorf("Unexpected signing method: %v", token.Header["alg"])

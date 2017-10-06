@@ -16,7 +16,7 @@ func main() {
 		JWTContextKey: "token",
 	})
 
-	// Create a router
+	// Create a router.
 	router := mux.NewRouter(mux.Routes{
 		{
 			Name:        "Public Resource",
@@ -31,23 +31,23 @@ func main() {
 			HandlerFunc: mid.Add(
 				secureHello,
 				mid.JWTAuthenticate,
-				mid.JWTAuthorize([]string{"user.update"}, isMe),
+				mid.JWTAuthorize([]string{"user.retrieve"}, isMe),
 			),
 		},
 	})
 
-	// Attempt to start server
+	// Attempt to start server.
 	if err := http.ListenAndServe(":1234", router); err != nil {
 		log.Fatal("Failed to start server")
 	}
 }
 
-// hello is a simple unprotected resource
+// hello is a simple unprotected resource.
 func hello(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte("Hello World"))
 }
 
-// secureHello is a simple protected resource
+// secureHello is a simple protected resource.
 func secureHello(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte("Hello Secure World"))
 }
@@ -60,14 +60,4 @@ func isMe(claims *middleware.Claims, r *http.Request) bool {
 	}
 
 	return claims.IsOwner(userID)
-}
-
-// NotMe is a condition we want to check along with authorization.
-func NotMe(claims *middleware.Claims, r *http.Request) bool {
-	userID, err := strconv.ParseUint(strings.Split(r.URL.Path, "/")[2], 10, 64)
-	if err != nil {
-		return false
-	}
-
-	return !claims.IsOwner(userID)
 }

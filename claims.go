@@ -52,7 +52,7 @@ func NewClaims(accessToken interface{}) *Claims {
 	}
 }
 
-// HasPermission checks if the token claims contains a particular permission
+// HasPermission checks if the token claims contains a particular permission.
 func (claims *Claims) HasPermission(permission string) bool {
 	for _, aPermission := range claims.Permissions {
 		if permission == aPermission {
@@ -63,7 +63,7 @@ func (claims *Claims) HasPermission(permission string) bool {
 	return false
 }
 
-// IsOwner checks if the token claims belongs to the resource owner
+// IsOwner checks if the token claims belongs to the resource owner.
 func (claims *Claims) IsOwner(userID uint64) bool {
 	return (claims.UserID == userID)
 }

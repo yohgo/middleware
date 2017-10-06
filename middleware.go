@@ -9,10 +9,10 @@ type Middleware struct {
 	Options Options
 }
 
-// Operation is a middleware operation
+// Operation is a middleware operation.
 type Operation func(w http.ResponseWriter, r *http.Request) bool
 
-// New creates a new Middleware
+// New creates a new Middleware.
 func New(options Options) *Middleware {
 	return &Middleware{
 		Options: options,
