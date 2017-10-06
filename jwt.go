@@ -41,18 +41,16 @@ func (m *Middleware) JWTAuthenticate(w http.ResponseWriter, r *http.Request) boo
 func (m *Middleware) JWTAuthorize(permissions []string, conditions ...Condition) Operation {
 	return func(w http.ResponseWriter, r *http.Request) bool {
 		// Attempting to get access token claims from the request context
-		claims := NewClaims(r.Context().Value("token"))
+		claims := NewClaims(r.Context().Value(m.Options.JWTContextKey))
 		if claims == nil {
 			http.Error(w, "Access to the requested resource is denied", http.StatusUnauthorized)
 			return false
 		}
 
-		// Checking if the access token claims contains the required permission
-		for _, permission := range permissions {
-			if !claims.HasPermission(permission) {
-				http.Error(w, "Access to the requested resource is denied", http.StatusUnauthorized)
-				return false
-			}
+		// Checking if the access token claims contains at least one of the required permission
+		if !claims.HasOnePermission(permissions) {
+			http.Error(w, "Access to the requested resource is denied", http.StatusUnauthorized)
+			return false
 		}
 
 		// Check if all conditions are satisfied

@@ -63,6 +63,17 @@ func (claims *Claims) HasPermission(permission string) bool {
 	return false
 }
 
+// HasOnePermission checks if the token claims contains at least one of the specified permissions.
+func (claims *Claims) HasOnePermission(permissions []string) bool {
+	for _, permission := range permissions {
+		if claims.HasPermission(permission) {
+			return true
+		}
+	}
+
+	return false
+}
+
 // IsOwner checks if the token claims belongs to the resource owner.
 func (claims *Claims) IsOwner(userID uint64) bool {
 	return (claims.UserID == userID)
