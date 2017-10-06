@@ -2,11 +2,14 @@ package middleware
 
 import (
 	"net/http"
+
+	"github.com/yohgo/pastry"
 )
 
 // Middleware is a struct that defines middleware.
 type Middleware struct {
 	Options Options
+	pastry.JSONResolver
 }
 
 // Operation is a middleware operation.
