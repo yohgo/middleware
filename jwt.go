@@ -27,7 +27,7 @@ func (m *Middleware) JWTAuthenticate(w http.ResponseWriter, r *http.Request) boo
 	})
 
 	if err != nil || !parsedToken.Valid {
-		http.Error(w, "Access to the requested resource is denied", http.StatusUnauthorized)
+		m.ResolveJSONError(w, http.StatusUnauthorized, http.StatusText(http.StatusUnauthorized), "Access to the requested resource is denied")
 		return false
 	}
 
@@ -43,20 +43,20 @@ func (m *Middleware) JWTAuthorize(permissions []string, conditions ...Condition)
 		// Attempting to get access token claims from the request context
 		claims := NewClaims(r.Context().Value(m.Options.JWTContextKey))
 		if claims == nil {
-			http.Error(w, "Access to the requested resource is denied", http.StatusUnauthorized)
+			m.ResolveJSONError(w, http.StatusUnauthorized, http.StatusText(http.StatusUnauthorized), "Access to the requested resource is denied")
 			return false
 		}
 
 		// Checking if the access token claims contains at least one of the required permission
 		if !claims.HasPermissions(permissions, false) {
-			http.Error(w, "Access to the requested resource is denied", http.StatusUnauthorized)
+			m.ResolveJSONError(w, http.StatusUnauthorized, http.StatusText(http.StatusUnauthorized), "Access to the requested resource is denied")
 			return false
 		}
 
 		// Check if all conditions are satisfied
 		for _, condition := range conditions {
 			if !condition(claims, r) {
-				http.Error(w, "Access to the requested resource is denied", http.StatusUnauthorized)
+				m.ResolveJSONError(w, http.StatusUnauthorized, http.StatusText(http.StatusUnauthorized), "Access to the requested resource is denied")
 				return false
 			}
 		}
