@@ -1,0 +1,19 @@
+# Data folder
+.data
+
+# OS files
+.DS_Store
+
+# Binaries for programs and plugins
+*.exe
+*.dll
+*.so
+*.dylib
+examples
+
+# Output of delve test debugger
+debug
+debug.test
+
+# Govendor
+vendor/*/
