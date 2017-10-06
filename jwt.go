@@ -48,7 +48,7 @@ func (m *Middleware) JWTAuthorize(permissions []string, conditions ...Condition)
 		}
 
 		// Checking if the access token claims contains at least one of the required permission
-		if !claims.HasOnePermission(permissions) {
+		if !claims.HasPermissions(permissions, false) {
 			http.Error(w, "Access to the requested resource is denied", http.StatusUnauthorized)
 			return false
 		}
