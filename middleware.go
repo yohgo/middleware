@@ -23,7 +23,7 @@ func New(options Options) *Middleware {
 }
 
 // Add adds middleware operations to a Handler.
-func (m *Middleware) Add(handler http.HandlerFunc, operations ...Operation) http.HandlerFunc {
+func (m *Middleware) Add(next http.HandlerFunc, operations ...Operation) http.HandlerFunc {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		for _, operation := range operations {
 			if !operation(w, r) {
@@ -31,6 +31,6 @@ func (m *Middleware) Add(handler http.HandlerFunc, operations ...Operation) http
 			}
 		}
 
-		handler.ServeHTTP(w, r)
+		next.ServeHTTP(w, r)
 	})
 }

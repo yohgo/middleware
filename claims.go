@@ -11,9 +11,9 @@ type Claims struct {
 	Permissions []string
 }
 
-// NewClaims creates a new Claims based on the provided access token.
-func NewClaims(accessToken interface{}) *Claims {
-	token, ok := accessToken.(*jwt.Token)
+// NewClaims creates a new Claims based on the provided token data.
+func NewClaims(data interface{}) *Claims {
+	token, ok := data.(*jwt.Token)
 	if !ok {
 		return nil
 	}
