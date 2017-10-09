@@ -1,3 +1,6 @@
+0.1.3 October 09, 2017
+  - Adds unit tests
+
 0.1.2 October 06, 2017
   - Adds yohgo pastry for resolving errors
 
